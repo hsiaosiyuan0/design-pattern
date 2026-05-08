@@ -74,6 +74,18 @@ class SoldierTypeFactory {
         return CACHE.computeIfAbsent(key, k -> new SoldierType(kind, armor));
     }
 }
+
+public class Client {
+    public static void main(String[] args) {
+        SoldierType cavalry = SoldierTypeFactory.get("骑兵", "铁甲");
+        SoldierType sameCavalry = SoldierTypeFactory.get("骑兵", "铁甲");
+
+        // 两名士卒共享同一份兵种与甲胄信息
+        System.out.println(cavalry == sameCavalry);
+        cavalry.report("张三", "北门");
+        sameCavalry.report("李四", "东门");
+    }
+}
 ```
 
 ## 给其他语言背景的读者
@@ -81,6 +93,10 @@ class SoldierTypeFactory {
 如果你来自 JavaScript，可以把享元模式先理解成“把大批对象里重复的数据提出来共享”。  
 Java 里会专门写一个工厂和缓存池，是因为它通常更显式地管理对象创建和内存占用。  
 模式本身关心的是共享重复状态，不是为了把普通缓存包装成很玄的术语。
+
+Python 和 JavaScript 里，字符串驻留、对象池、共享配置对象都带有享元味道；Objective-C / Swift 里，值类型和 copy-on-write 会自然缓解一部分重复复制问题，但大型共享资源仍需要明确缓存。Swift 的 `String`、`Array` 等标准类型已经帮你处理了不少共享细节。
+
+Rust 里享元常和所有权共享工具一起出现，例如 `Arc`、`Rc`、字符串驻留、arena 分配或缓存表。由于借用规则严格，内部状态和外部状态的边界必须讲清楚：共享的东西最好不可变，变化的东西由调用方带入。
 
 ## 何时用
 

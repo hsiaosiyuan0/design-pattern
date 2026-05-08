@@ -76,11 +76,54 @@ class ArmyDepartment extends Department {
     }
 }
 
+class FinanceDepartment extends Department {
+    public FinanceDepartment(Mediator mediator) {
+        super(mediator);
+    }
+
+    public void allocateFunds() {
+        System.out.println("户部拨款");
+    }
+}
+
+class GranaryDepartment extends Department {
+    public GranaryDepartment(Mediator mediator) {
+        super(mediator);
+    }
+
+    public void releaseFood() {
+        System.out.println("仓曹开粮");
+    }
+}
+
 class CourtMediator implements Mediator {
+    private FinanceDepartment finance;
+    private GranaryDepartment granary;
+
+    public void register(FinanceDepartment finance, GranaryDepartment granary) {
+        this.finance = finance;
+        this.granary = granary;
+    }
+
     @Override
     public void notify(Department sender, String event) {
-        // 所有协作规则集中写在这里
-        System.out.println("中枢协调事件：" + event);
+        // 所有协作规则集中写在这里，各部门不再彼此直接持有
+        if (sender instanceof ArmyDepartment && "need_food".equals(event)) {
+            finance.allocateFunds();
+            granary.releaseFood();
+        }
+    }
+}
+
+public class Client {
+    public static void main(String[] args) {
+        CourtMediator mediator = new CourtMediator();
+        ArmyDepartment army = new ArmyDepartment(mediator);
+        FinanceDepartment finance = new FinanceDepartment(mediator);
+        GranaryDepartment granary = new GranaryDepartment(mediator);
+
+        mediator.register(finance, granary);
+        army.requestFood();
     }
 }
 ```
@@ -90,6 +133,10 @@ class CourtMediator implements Mediator {
 如果你来自 JavaScript，可以把中介者模式先理解成“把一堆对象之间的对话，收束到一个中央协调器里”。  
 Java 里常写成一个明确的 `Mediator` 接口，是因为它希望把协调规则作为独立对象存在。  
 模式本身关心的是减少网状耦合，不是为了把部门关系写得更像官样结构图。
+
+Python 和 JavaScript 里，中介者常表现为事件总线、store、controller 或协调服务。Objective-C / Swift 里，UIKit/AppKit 的 controller、coordinator、NotificationCenter 有时都承担这种职责；但一旦所有规则都塞进去，它们也很容易变成难以维护的中心。
+
+Rust 里中介者常落成 channel、actor、调度器或拥有各组件句柄的协调结构。所有权模型会逼你决定：中介者是否拥有各部门，还是只持有发送端；消息是否跨线程，是否需要 `Send`。这会让“居中协调”从一开始就带上并发边界。
 
 ## 何时用
 

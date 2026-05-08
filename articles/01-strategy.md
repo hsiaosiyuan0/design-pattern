@@ -145,6 +145,10 @@ public class Client {
         // 后续再切换为固守
         commander.changeStrategy(new DefenseStrategy());
         commander.issueOrder();
+
+        // 新增战法时，主帅类不需要改，只切换到新的策略对象
+        commander.changeStrategy(new DivideStrategy());
+        commander.issueOrder();
     }
 }
 ```
@@ -154,6 +158,10 @@ public class Client {
 如果你先接触的是 JavaScript 或 Python，可以把策略模式先理解成“把一组可替换的函数单独拿出来，再在运行时选一个执行”。  
 Java 之所以常写成接口和类，不是因为模式本身要求“必须很多类”，而是因为 Java 更习惯把行为装进对象里。  
 如果策略很轻，在 Java 里也可以用函数式接口和 Lambda 来写；接口、实现类这些外形，更多是 Java 的落地方式，不是模式的本体。
+
+在 Objective-C 里，你可能会用 block 或 delegate 承载一套可替换行为；在 Swift 里，常见落点是 protocol、闭包，或把不同算法写成枚举分支配合关联值。若只是三五个很小的算法，Swift 的 `switch` 反而更直接。
+
+Rust 里要看策略是否需要运行时切换。若战法在编译期就能确定，泛型和 trait bound 更轻；若要像军府临阵换将一样运行时切换，则可以用 `Box<dyn Trait>`。所以策略模式在 Rust 中仍然存在，只是常被 trait、泛型和枚举这些语言工具重新塑形。
 
 ## 何时用
 

@@ -14,6 +14,8 @@
 
 ## 史局拆解
 
+牙门属吏并不替节度使做最终裁断，但他们决定谁能进、何时进、带着什么文书进。若没有这层门禁，真正的决策者会先被无数无效请求淹没。
+
 很多对象不适合被直接访问：
 
 - 可能初始化代价高
@@ -67,31 +69,48 @@ class VisitorService {
 ```java
 interface Governor {
     // 外界只知道这里有一个批示入口
-    void approve();
+    void approve(String visitorToken);
 }
 
 class RealGovernor implements Governor {
     @Override
-    public void approve() {
+    public void approve(String visitorToken) {
         // 真实对象只处理核心业务
         System.out.println("节度使亲自批示");
     }
 }
 
 class GovernorProxy implements Governor {
-    // 代理内部持有真实对象
-    private final RealGovernor realGovernor = new RealGovernor();
+    // 真实对象很重时，可以延迟到真正需要时再创建
+    private RealGovernor realGovernor;
 
     @Override
-    public void approve() {
+    public void approve(String visitorToken) {
         // 先做访问控制
         System.out.println("先校验来人身份");
+        if (!"court-pass".equals(visitorToken)) {
+            System.out.println("身份不符，牙门不放行");
+            return;
+        }
+
+        if (realGovernor == null) {
+            System.out.println("首次放行，才请节度使入堂");
+            realGovernor = new RealGovernor();
+        }
 
         // 再调用真实对象
-        realGovernor.approve();
+        realGovernor.approve(visitorToken);
 
         // 最后补上附加行为
         System.out.println("记录来访档案");
+    }
+}
+
+public class Client {
+    public static void main(String[] args) {
+        Governor governor = new GovernorProxy();
+        governor.approve("wrong-token");
+        governor.approve("court-pass");
     }
 }
 ```
@@ -102,11 +121,15 @@ class GovernorProxy implements Governor {
 Java 里常写成“代理对象和真实对象实现同一个接口”，是因为这样调用方就可以无感切换，不必知道自己拿到的是哪一层。  
 模式本身关心的是访问控制、懒加载、远程包装这些职责，不是强制要求一定有某种复杂类结构。
 
+JavaScript 还有语言级的 `Proxy`，可以拦截属性读取、写入和函数调用；Python 则常用包装对象、描述符或 `__getattr__` 转发。Objective-C 的消息转发机制本身就很适合做动态代理，Swift 则更常用 protocol + wrapper，把控制逻辑放到类型边界上。
+
+Rust 里因为借用检查和所有权边界更明确，代理常常表现为 wrapper 类型：例如缓存包装、权限包装、智能指针，或实现同一个 trait 的远程客户端。它不会鼓励随意动态拦截，但会鼓励你把“能不能访问、如何访问”写进类型和所有权关系里。
+
 ## 何时用
 
 - 访问前需要校验或控制
 - 对象创建很重，适合懒加载
-- 需要包装远程调用、日志、缓存
+- 需要在访问周围加入日志、缓存、限流等附加治理
 
 ## 何时慎用
 

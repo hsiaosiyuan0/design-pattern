@@ -330,7 +330,7 @@ function markdownToHtml(markdown, source) {
 
   for (const raw of lines) {
     const line = raw.trimEnd();
-    const fence = /^```(\w+)?/.exec(line);
+    const fence = /^```([A-Za-z0-9_+-]+)?/.exec(line);
     if (fence) {
       if (code) {
         html.push(renderCodeBlock(code.lang, code.lines.join("\n")));
@@ -397,11 +397,54 @@ function inline(text, source) {
 
 function renderCodeBlock(lang, source) {
   const safeLang = escapeHtml(lang || "text");
-  const highlighted = lang === "java" ? highlightJava(source) : escapeHtml(source);
+  const highlighted = highlightCode(lang, source);
   return `<pre><code class="language-${safeLang}">${highlighted}</code></pre>`;
 }
 
-function highlightJava(source) {
+function languageKeywordsFor(lang) {
+  const keywords = {
+    java: [
+    "interface", "class", "enum", "abstract", "extends", "implements", "public", "private", "protected",
+    "static", "final", "void", "return", "new", "if", "else", "for", "while", "try", "catch", "throw",
+    "throws", "import", "package", "this", "super", "boolean", "int", "long", "double", "float", "char",
+    "byte", "short", "true", "false", "null"
+    ],
+    javascript: [
+    "const", "let", "var", "function", "class", "extends", "import", "export", "default", "return",
+    "new", "if", "else", "for", "while", "switch", "case", "break", "continue", "try", "catch",
+    "throw", "async", "await", "this", "super", "true", "false", "null", "undefined"
+    ],
+    python: [
+    "def", "class", "return", "if", "elif", "else", "for", "while", "in", "try", "except", "raise",
+    "with", "as", "import", "from", "lambda", "None", "True", "False", "self", "pass", "break",
+    "continue", "yield", "async", "await", "global", "nonlocal"
+    ],
+    swift: [
+    "let", "var", "func", "class", "struct", "enum", "protocol", "extension", "import", "if", "else",
+    "for", "while", "switch", "case", "default", "return", "throw", "throws", "try", "catch", "guard",
+    "where", "in", "as", "is", "nil", "true", "false", "self", "super", "static", "private", "public",
+    "internal", "fileprivate", "open", "final", "override", "init", "deinit", "associatedtype",
+    "typealias", "mutating", "nonmutating", "async", "await"
+    ],
+    rust: [
+    "let", "mut", "fn", "struct", "enum", "trait", "impl", "for", "where", "use", "pub", "crate", "mod",
+    "match", "if", "else", "loop", "while", "return", "Self", "self", "super", "true", "false", "None",
+    "Some", "Ok", "Err", "async", "await", "move", "const", "static", "ref", "type", "as", "in", "dyn"
+    ],
+    objectivec: [
+    "id", "instancetype", "void", "int", "BOOL", "YES", "NO", "nil", "self", "super", "return", "if",
+    "else", "for", "while", "typedef", "enum", "struct", "static", "const", "strong", "weak", "copy",
+    "nonatomic", "atomic", "readonly", "readwrite"
+    ]
+  };
+  return keywords[lang];
+}
+
+function highlightCode(lang, source) {
+  const normalized = normalizeCodeLang(lang);
+  const keywords = languageKeywordsFor(normalized);
+  if (!keywords) return escapeHtml(source);
+
   const escaped = escapeHtml(source);
   const placeholders = [];
   const store = (html) => {
@@ -411,16 +454,60 @@ function highlightJava(source) {
   };
 
   let highlighted = escaped
-    .replace(/(\/\/[^\n]*)/g, (match) => store(`<span class="tok-comment">${match}</span>`))
-    .replace(/(&quot;(?:\\.|[^&])*?&quot;)/g, (match) => store(`<span class="tok-string">${match}</span>`));
+    .replace(/(`(?:\\.|[^`\\])*`)/g, (match) => store(`<span class="tok-string">${match}</span>`))
+    .replace(/(&quot;(?:\\.|[^&])*?&quot;)/g, (match) => store(`<span class="tok-string">${match}</span>`))
+    .replace(/('(?:\\.|[^'\\])*')/g, (match) => store(`<span class="tok-string">${match}</span>`));
 
+  if (normalized === "python") {
+    highlighted = highlighted.replace(/(#[^\n]*)/g, (match) => store(`<span class="tok-comment">${match}</span>`));
+  } else {
+    highlighted = highlighted
+      .replace(/(\/\*[\s\S]*?\*\/)/g, (match) => store(`<span class="tok-comment">${match}</span>`))
+      .replace(/(\/\/[^\n]*)/g, (match) => store(`<span class="tok-comment">${match}</span>`));
+  }
+
+  const keywordPattern = new RegExp(`\\b(${keywords.map(escapeRegExp).join("|")})\\b`, "g");
   highlighted = highlighted
-    .replace(/\b(interface|class|enum|abstract|extends|implements|public|private|protected|static|final|void|return|new|if|else|for|while|try|catch|throw|throws|import|package|this|super|boolean|int|long|double|float|char|byte|short|true|false|null)\b/g, '<span class="tok-keyword">$1</span>')
+    .replace(keywordPattern, '<span class="tok-keyword">$1</span>')
+    .replace(/@(interface|implementation|end|protocol|property|class|selector|autoreleasepool|synthesize|dynamic)\b/g, '<span class="tok-keyword">@$1</span>')
     .replace(/\b([A-Z][A-Za-z0-9_]*)\b/g, '<span class="tok-type">$1</span>')
     .replace(/\b([a-z][A-Za-z0-9_]*)\s*(?=\()/g, '<span class="tok-method">$1</span>')
-    .replace(/\b(\d+)\b/g, '<span class="tok-number">$1</span>');
+    .replace(/\b(\d+(?:\.\d+)?)\b/g, '<span class="tok-number">$1</span>');
 
-  return highlighted.replace(/\uE000([\uE100-\uE1FF])\uE001/g, (_, marker) => placeholders[marker.charCodeAt(0) - 0xE100]);
+  return restoreCodePlaceholders(highlighted, placeholders);
+}
+
+function normalizeCodeLang(lang) {
+  const languageAliases = {
+    js: "javascript",
+    jsx: "javascript",
+    mjs: "javascript",
+    py: "python",
+    rs: "rust",
+    objc: "objectivec",
+    "objective-c": "objectivec",
+    objective_c: "objectivec",
+    objectivec: "objectivec",
+    m: "objectivec",
+    mm: "objectivec"
+  };
+  const normalized = String(lang || "text").toLowerCase();
+  return languageAliases[normalized] || normalized;
+}
+
+function restoreCodePlaceholders(value, placeholders) {
+  const marker = /\uE000([\uE100-\uEFFF])\uE001/g;
+  let restored = value;
+  let previous;
+  do {
+    previous = restored;
+    restored = restored.replace(marker, (_, token) => placeholders[token.charCodeAt(0) - 0xE100]);
+  } while (restored !== previous);
+  return restored;
+}
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 function rewriteLink(href, source) {
@@ -1127,6 +1214,27 @@ button:focus-visible {
   font-size: 13px;
 }
 
+.site-footer {
+  width: min(780px, calc(100% - 64px));
+  margin: 0 auto;
+  padding: 30px 0 52px;
+  border-top: 1px solid var(--line);
+  text-align: center;
+}
+.site-footer p {
+  margin: 0;
+  color: #475569;
+  font-size: 16px;
+  line-height: 1.75;
+}
+.site-footer p:first-child {
+  color: var(--ink-soft);
+  font-weight: 700;
+}
+.site-footer p + p {
+  margin-top: 8px;
+}
+
 @media (min-width: 1280px) {
   .cover-copy h1 { font-size: 128px; }
 }
@@ -1260,6 +1368,13 @@ button:focus-visible {
   }
   .pager { grid-template-columns: 1fr; }
   .pager a:last-child { text-align: left; }
+  .site-footer {
+    width: calc(100% - 36px);
+    padding: 24px 0 40px;
+  }
+  .site-footer p {
+    text-align: left;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

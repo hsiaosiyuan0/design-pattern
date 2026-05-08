@@ -20,6 +20,8 @@
 
 ## 史局拆解
 
+沈策翻三镇名册时，最刺眼的不是兵种不同，而是每一处差异都被写回兵部总册。河东添骑具，汴梁改甲号，江淮添船籍，中枢那份“统一募兵法”被改得像补丁摞补丁。
+
 在代码里，常见的错误是业务层直接 `new` 具体类：
 
 ```java
@@ -92,6 +94,14 @@ class Infantry implements Soldier {
     }
 }
 
+class Sailor implements Soldier {
+    @Override
+    public void fight() {
+        // 江淮军营造出的水军
+        System.out.println("水军登船");
+    }
+}
+
 abstract class Barracks {
     // 统一的募兵入口，但不写死具体产品
     public abstract Soldier recruitSoldier();
@@ -113,10 +123,18 @@ class BianliangBarracks extends Barracks {
     }
 }
 
+class JianghuaiBarracks extends Barracks {
+    @Override
+    public Soldier recruitSoldier() {
+        // 新增地区时，新增军营子类即可
+        return new Sailor();
+    }
+}
+
 public class Client {
     public static void main(String[] args) {
         // 调用方只依赖抽象军营
-        Barracks barracks = new HedongBarracks();
+        Barracks barracks = new JianghuaiBarracks();
         Soldier soldier = barracks.recruitSoldier();
         soldier.fight();
     }
@@ -128,6 +146,10 @@ public class Client {
 如果你来自 JavaScript 或 Python，可以把工厂方法先理解成“把创建逻辑单独包起来”，而不是业务代码里到处直接构造对象。  
 Java 里常用抽象类和子类承载这个变化点，因为它天然适合把“统一入口”和“具体产物”分开。  
 模式真正关心的是“谁负责创建”，不是“是否一定要继承”。
+
+Objective-C 和 Swift 里，很多时候会用类方法、静态工厂方法、protocol + 具体类型，或直接用闭包注入创建逻辑。Swift 的枚举和泛型也会削弱一部分工厂类需求：如果产品族很小、类型关系清楚，`switch` 或泛型初始化器可能更自然。
+
+Rust 里通常不把它写成传统 OO 的“工厂父类 + 工厂子类”。更常见的是关联函数、trait 的关联类型、泛型工厂函数，或者在需要运行时分派时返回 `Box<dyn Trait>`。也就是说，创建权仍要隔离，但隔离方式会顺着所有权和 trait 系统来。
 
 ## 何时用
 

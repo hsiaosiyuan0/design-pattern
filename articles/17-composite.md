@@ -85,6 +85,21 @@ class Squad implements Unit {
         }
     }
 }
+
+public class Client {
+    public static void main(String[] args) {
+        Squad squad = new Squad();
+        squad.add(new Soldier());
+        squad.add(new Soldier());
+
+        Squad battalion = new Squad();
+        battalion.add(squad);
+        battalion.add(new Soldier());
+
+        // 调用方不区分叶子还是容器，统一按 Unit 处理
+        battalion.showPower();
+    }
+}
 ```
 
 ## 给其他语言背景的读者
@@ -92,6 +107,10 @@ class Squad implements Unit {
 如果你来自 JavaScript，可以把组合模式先理解成“让树节点拥有统一接口”，递归时就不用到处分支判断。  
 Java 里常用接口来统一叶子和容器，是因为它特别适合把递归结构的共同能力先抽出来。  
 模式本身关心的是一致对外，不是为了把树结构画得更规整。
+
+Python 和 JavaScript 里，树节点常常就是普通对象或字典，统一入口可能只是同名方法或同形数据。Objective-C / Swift 里，若节点种类固定，Swift 的 enum 递归结构会比一组类更紧凑；若需要开放扩展，protocol + 组合对象仍然合适。
+
+Rust 里组合结构通常会显式面对递归类型大小问题，常见写法是 `enum Node { Leaf(...), Branch(Vec<Node>) }`，必要时用 `Box` 打断递归。若需要统一行为，可给 enum 实现方法或 trait。Rust 不会隐藏树的所有权关系，这能帮你更早看清谁拥有子节点。
 
 ## 何时用
 

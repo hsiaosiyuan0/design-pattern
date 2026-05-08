@@ -94,6 +94,37 @@ class AuditInspector implements Inspector {
         System.out.println("核查军备");
     }
 }
+
+class DisciplineInspector implements Inspector {
+    @Override
+    public void visit(GranaryOffice office) {
+        // 新增一种巡按，不需要改粮仓类
+        System.out.println("核查粮仓出入记录");
+    }
+
+    @Override
+    public void visit(ArmyOffice office) {
+        // 新增一种巡按，不需要改军府类
+        System.out.println("核查军纪名册");
+    }
+}
+
+public class Client {
+    public static void main(String[] args) {
+        Office[] offices = {
+            new GranaryOffice(),
+            new ArmyOffice()
+        };
+
+        Inspector audit = new AuditInspector();
+        Inspector discipline = new DisciplineInspector();
+
+        for (Office office : offices) {
+            office.accept(audit);
+            office.accept(discipline);
+        }
+    }
+}
 ```
 
 ## 给其他语言背景的读者
@@ -101,6 +132,10 @@ class AuditInspector implements Inspector {
 如果你来自 JavaScript，可以把访问者模式先理解成“数据结构不动，把操作抽成外部访问器”。  
 Java 里这套写法看起来会比较重，因为它把双分派关系写得很显式。  
 模式本身适合“结构稳定、操作多变”的场景；如果结构本身也天天变，访问者往往并不划算。
+
+Python 和 JavaScript 里因为动态分派灵活，访问者常被普通函数、多分派库或按类型查表替代。Objective-C 的运行时也能动态派发；Swift 如果元素集合封闭，常用 enum + pattern matching 处理不同节点，未必要写完整访问者。
+
+Rust 里访问者常见于 AST 遍历、编译器和解析器。若节点是 enum，`match` 很直接；若希望把“遍历结构”和“对节点执行什么操作”分开，就会定义 visitor trait。Rust 的模式匹配会削弱一部分访问者需求，但大型树结构上 visitor 仍然很实用。
 
 ## 何时用
 

@@ -98,6 +98,34 @@ class GovernorOfficial extends Official {
         }
     }
 }
+
+class CapitalOfficial extends Official {
+    @Override
+    public void handle(String memorial, int level) {
+        if (level > 3) {
+            // 最高一级奏章由京师处理
+            System.out.println("京师处理：" + memorial);
+            return;
+        }
+        if (next != null) {
+            next.handle(memorial, level);
+        }
+    }
+}
+
+public class Client {
+    public static void main(String[] args) {
+        Official county = new CountyOfficial();
+        Official governor = new GovernorOfficial();
+        Official capital = new CapitalOfficial();
+
+        county.setNext(governor);
+        governor.setNext(capital);
+
+        // 发送者只交给链头，不关心最终由哪一级处理
+        county.handle("边关急报", 4);
+    }
+}
 ```
 
 ## 给其他语言背景的读者
@@ -105,6 +133,10 @@ class GovernorOfficial extends Official {
 如果你来自 JavaScript，可以把责任链先理解成中间件链或 handler 链。  
 Java 里常把每一站写成对象并用 `next` 串起来，是因为这样每个处理者的职责边界最清楚。  
 模式本身关心的是请求可传递，不是要求调用者背下一整串类名。
+
+Python 和 JavaScript 的 Web 框架里，中间件就是责任链的常见形态：请求一层层经过日志、鉴权、路由、业务处理。Objective-C / Swift 里，这种链式处理常藏在 responder chain、拦截器、delegate 转发或 middleware 里。
+
+Rust 的 Web 框架也大量使用类似责任链的 layer / service 组合。只不过 Rust 会把每一层的输入输出、错误类型、异步边界写得更明确；如果链条要动态组合，可能需要 trait object 或 boxed future。责任链仍在，只是被类型系统照得更清楚。
 
 ## 何时用
 

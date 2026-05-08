@@ -93,6 +93,30 @@ class CavalryCampaign extends Campaign {
         System.out.println("高速穿插");
     }
 }
+
+class NavalCampaign extends Campaign {
+    @Override
+    protected void deploy() {
+        // 水军有自己的布阵方式
+        System.out.println("战船列阵");
+    }
+
+    @Override
+    protected void fight() {
+        // 水军有自己的作战方式
+        System.out.println("顺流夹击");
+    }
+}
+
+public class Client {
+    public static void main(String[] args) {
+        Campaign cavalry = new CavalryCampaign();
+        Campaign navy = new NavalCampaign();
+
+        cavalry.executeCampaign();
+        navy.executeCampaign();
+    }
+}
 ```
 
 ## 给其他语言背景的读者
@@ -100,6 +124,10 @@ class CavalryCampaign extends Campaign {
 如果你来自 JavaScript 或 Python，可以把模板方法先理解成“固定流程 + 若干可覆写钩子”。  
 Java 里常借助继承来表达这件事，因为父类很适合承载不变骨架，子类负责填入变化步骤。  
 模式本身关心的是骨架与变化点分离，不是继承本身。
+
+Objective-C 里这类结构常出现在基类回调、delegate 或 framework life cycle 里；Swift 里则要谨慎使用继承，因为 protocol extension、闭包注入和组合往往更轻。若流程骨架来自框架，例如视图生命周期，模板方法很自然；若只是业务流程，Swift 里用函数组合可能更清楚。
+
+Rust 不鼓励用继承表达骨架，因此传统模板方法会变形。你可以用 trait 提供默认方法，把必填步骤留给实现者；也可以把可变步骤作为函数或泛型参数传入。Rust 版的重点仍是“顺序由一处掌控，变化点被显式暴露”，只是不会长成父类和子类。
 
 ## 何时用
 

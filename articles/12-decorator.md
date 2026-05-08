@@ -107,6 +107,18 @@ class ArmGuardDecorator extends WarriorDecorator {
         return warrior.equip() + " + 护臂";
     }
 }
+
+public class Client {
+    public static void main(String[] args) {
+        Warrior warrior = new BasicWarrior();
+
+        // 功能按需要动态叠加，不必为每种组合新建子类
+        warrior = new ArmorDecorator(warrior);
+        warrior = new ArmGuardDecorator(warrior);
+
+        System.out.println(warrior.equip());
+    }
+}
 ```
 
 ## 给其他语言背景的读者
@@ -114,6 +126,10 @@ class ArmGuardDecorator extends WarriorDecorator {
 如果你先接触的是 JavaScript，可以把装饰器先理解成“在原函数或原对象外再包一层增强”。  
 Java 里常写成一层层实现同一接口的装饰器类，是为了保证包装前后对外仍是同一种对象。  
 模式本身关心的是动态叠加功能，不是为了把包装动作写得特别复杂。
+
+Python 里有语言级函数装饰器，JavaScript / TypeScript 也有装饰器语法或高阶函数；Objective-C 里可以用 category 扩展能力，但 category 更像给类直接加方法，不等同于运行时叠包装。Swift 里常见的是 property wrapper、protocol wrapper、函数包装或组合式 view modifier。
+
+Rust 里装饰器常表现为 wrapper 类型：比如给一个 reader 外面套 buffer、日志、限速或压缩层。由于所有权清晰，一层包装通常会明确接管内层对象。它不靠继承叠功能，而是靠 newtype、trait 实现和组合把“甲上添甲”写出来。
 
 ## 何时用
 

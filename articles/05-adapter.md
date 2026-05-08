@@ -16,6 +16,8 @@
 
 ## 史局拆解
 
+沈策没有让吴越使者重写贡单，也没有让六部从头学海商旧制。两边制度都已运行多年，真正缺的是中间那道可控的转译层。
+
 在软件里，老系统、第三方接口、外部库常常都能提供你想要的能力，只是接口不兼容。你不能总指望别人为你改，也不该为了兼容它，重写自己现有的调用逻辑。
 
 ## 模式之义
@@ -82,6 +84,22 @@ class EnvoyAdapter implements CourtDocument {
         return "转译后：" + foreignEnvoy.submitForeignScroll();
     }
 }
+
+class CourtService {
+    public void archive(CourtDocument document) {
+        // 新系统只认 CourtDocument，不关心旧对象来自哪里
+        System.out.println("归档：" + document.submit());
+    }
+}
+
+public class Client {
+    public static void main(String[] args) {
+        ForeignEnvoy oldEnvoy = new ForeignEnvoy();
+        CourtDocument document = new EnvoyAdapter(oldEnvoy);
+
+        new CourtService().archive(document);
+    }
+}
 ```
 
 ## 给其他语言背景的读者
@@ -89,6 +107,10 @@ class EnvoyAdapter implements CourtDocument {
 如果你先接触的是 JavaScript，可以把适配器先理解成“包一层转换函数”，把旧接口转成当前系统想要的接口。  
 Java 里常把它写成一个单独的适配器类，是因为接口类型在 Java 中比较重要，系统往往明确要求“你必须实现这个接口”。  
 模式本身只是解决兼容问题，不要求一定长成类图里的样子。
+
+Python 里适配器常常只是一个小函数或薄包装对象，因为鸭子类型让“长得像目标接口”已经足够。Objective-C 里可能落成 protocol 适配对象或 category；Swift 里则常用 extension、protocol conformance 或包装结构体，把旧 API 接到新协议上。
+
+Rust 里适配器很常见，只是名字未必叫 Adapter。`From` / `Into`、newtype 包装、trait 实现都能把一种接口转成另一种接口。由于孤儿规则限制，你不能随便给外部类型实现外部 trait，这时 newtype 就像专门设的通事官。
 
 ## 何时用
 

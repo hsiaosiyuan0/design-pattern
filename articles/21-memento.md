@@ -75,6 +75,32 @@ class BattlePlan {
         }
     }
 }
+
+class BattleHistory {
+    private final java.util.Deque<BattlePlan.Memento> snapshots = new java.util.ArrayDeque<>();
+
+    public void push(BattlePlan.Memento memento) {
+        // 管理者只保存快照，不知道内部字段是什么
+        snapshots.push(memento);
+    }
+
+    public BattlePlan.Memento pop() {
+        return snapshots.pop();
+    }
+}
+
+public class Client {
+    public static void main(String[] args) {
+        BattlePlan plan = new BattlePlan();
+        BattleHistory history = new BattleHistory();
+
+        plan.setFormation("雁行阵");
+        history.push(plan.save());
+
+        plan.setFormation("鱼鳞阵");
+        plan.restore(history.pop());
+    }
+}
 ```
 
 ## 给其他语言背景的读者
@@ -82,6 +108,10 @@ class BattlePlan {
 如果你来自 JavaScript，可以把备忘录模式先理解成“生成一个受控快照，用来回滚”。  
 Java 里常把快照写成内部类，是为了更明确地控制谁能看到这份状态。  
 模式本身关心的是快照与恢复，不是为了把普通拷贝写得故作神秘。
+
+Python 和 JavaScript 里，如果状态是普通对象，浅拷贝和深拷贝都很容易写，但也更容易不小心共享内部引用。Objective-C 里可借助 `NSCopying`，Swift 值类型天然适合做快照；若状态是引用类型，仍要小心到底复制了哪一层。
+
+Rust 里备忘录常依赖 `Clone`、不可变数据结构或事件溯源。所有权模型会让快照成本变得明确：克隆大状态很贵，共享状态要考虑 `Rc` / `Arc`，可变状态要考虑锁。Rust 不会阻止你做快照，但会让“保存过去”这件事付出的代价很难被忽略。
 
 ## 何时用
 

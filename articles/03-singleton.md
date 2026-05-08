@@ -16,6 +16,8 @@
 
 ## 史局拆解
 
+沈策后来查印信库，发现最麻烦的不是没人管玉玺，而是每个衙门都觉得自己“临时刻一枚也无妨”。印一多，真印反而失去了制度上的重量。
+
 比如配置管理器、线程池、日志入口、缓存中心，如果你允许别人到处 `new`，就等于让各地私刻印信。代码短期可能没坏，运行时秩序却会慢慢松掉。
 
 ## 模式之义
@@ -64,9 +66,12 @@ public class Client {
 class ImperialSeal {
     // volatile 用来保证多线程下的可见性
     private static volatile ImperialSeal instance;
+    private final String sealRegister;
 
     // 私有构造，外界不能直接 new
     private ImperialSeal() {
+        // 假设印信登记册加载代价很高，只应该初始化一次
+        this.sealRegister = "中枢印信登记册";
     }
 
     public static ImperialSeal getInstance() {
@@ -84,7 +89,17 @@ class ImperialSeal {
 
     public void stamp(String edict) {
         // 唯一实例对外提供统一能力
-        System.out.println("用玉玺批复：" + edict);
+        System.out.println("用玉玺批复：" + edict + "，登记于：" + sealRegister);
+    }
+}
+
+public class Client {
+    public static void main(String[] args) {
+        ImperialSeal first = ImperialSeal.getInstance();
+        ImperialSeal second = ImperialSeal.getInstance();
+
+        // 两次取得的是同一个入口、同一个实例
+        System.out.println(first == second);
     }
 }
 ```
@@ -107,6 +122,10 @@ enum ImperialSealHolder {
 如果你先接触的是 JavaScript 或 Python，单例可以先理解成“全局只有一个受控实例”，而不是“随处可访问的全局变量”。  
 Java 里之所以会写成私有构造、静态字段和 `getInstance()`，是因为它需要在语言层面阻止别人继续 `new`。  
 模式本身要解决的是唯一性与统一入口，不是某一种写法本身。
+
+Objective-C 里常见写法是 `dispatch_once` 创建共享实例；Swift 里最常见的是 `static let shared`，线程安全由语言初始化规则兜底。也正因为写起来太容易，Swift 项目里更要警惕把 `shared` 变成全局状态仓库。
+
+Rust 里全局唯一对象通常要更谨慎。只读常量可以用 `static`，需要惰性初始化可借助 `OnceLock` / `LazyLock`，有可变状态时还要配合 `Mutex`、`RwLock` 或原子类型。Rust 的所有权模型会逼你把“全局唯一”和“全局可变”分开想，这恰好能减少单例滥用。
 
 ## 何时用
 

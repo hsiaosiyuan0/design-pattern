@@ -96,6 +96,28 @@ class GrainOrder extends CargoOrder {
         transporter.carry("粮草");
     }
 }
+
+class WeaponOrder extends CargoOrder {
+    public WeaponOrder(Transporter transporter) {
+        super(transporter);
+    }
+
+    @Override
+    public void deliver() {
+        // 军械订单也可以搭配任意运输方式
+        transporter.carry("军械");
+    }
+}
+
+public class Client {
+    public static void main(String[] args) {
+        CargoOrder boatGrain = new GrainOrder(new BoatTransporter());
+        CargoOrder cartWeapon = new WeaponOrder(new CartTransporter());
+
+        boatGrain.deliver();
+        cartWeapon.deliver();
+    }
+}
 ```
 
 ## 给其他语言背景的读者
@@ -103,6 +125,10 @@ class GrainOrder extends CargoOrder {
 如果你来自 JavaScript，可以把桥接模式先理解成“把两个独立维度拆成两个可组合模块”。  
 Java 里用抽象类加接口的写法很常见，因为它擅长显式表达“抽象层持有实现层”。  
 模式本身关心的是维度分离，不是为了把组合问题写得更像教科书。
+
+Python 和 JavaScript 里，桥接往往就是对象组合或函数参数：一个业务对象持有一个可替换的实现模块。Objective-C / Swift 里，protocol + 组合很自然，尤其适合把平台差异、存储差异、渲染差异从业务抽象里拆出去。
+
+Rust 里桥接通常会写成泛型参数、trait bound 或 trait object。编译期固定实现时，用泛型能少一次动态分派；运行时要换实现时，再用 `Box<dyn Trait>`。Rust 让你更明确地选择：这座桥是在编译期架好，还是运行时临时换路。
 
 ## 何时用
 

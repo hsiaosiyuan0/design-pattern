@@ -85,6 +85,37 @@ class AndExpression implements Expression {
         return left.interpret(context) && right.interpret(context);
     }
 }
+
+class OrExpression implements Expression {
+    private final Expression left;
+    private final Expression right;
+
+    public OrExpression(Expression left, Expression right) {
+        this.left = left;
+        this.right = right;
+    }
+
+    @Override
+    public boolean interpret(String context) {
+        // 组合规则：左右表达式任一成立即可
+        return left.interpret(context) || right.interpret(context);
+    }
+}
+
+public class Client {
+    public static void main(String[] args) {
+        Expression urgentMilitary = new AndExpression(
+            new TerminalExpression("兵"),
+            new TerminalExpression("急")
+        );
+        Expression wartimeRelief = new OrExpression(
+            urgentMilitary,
+            new TerminalExpression("战时豁免")
+        );
+
+        System.out.println(wartimeRelief.interpret("兵部急报"));
+    }
+}
 ```
 
 ## 给其他语言背景的读者
@@ -92,6 +123,10 @@ class AndExpression implements Expression {
 如果你来自 JavaScript，可以把解释器模式先理解成“把一套规则拆成可组合的小表达式”，有点像自己搭一个很轻的小 DSL。  
 Java 里它常写成很多表达式类，是因为类很适合承载文法节点。  
 模式本身关心的是规则可组合、可解释，不是要求你凡写规则都先发明一门语言。
+
+Python 和 JavaScript 很适合做小型 DSL，因为函数、字典、闭包和动态对象都轻；Objective-C / Swift 里则可能用 parser、result builder、枚举表达式树或规则对象来承载语法。Swift 的 result builder 在声明式 DSL 上尤其常见，但它更适合结构化构建，不等同于完整解释器。
+
+Rust 里解释器常会先把规则解析成 enum AST，再用 `match` 解释执行；需要性能或语法复杂时，会引入 parser combinator、`nom`、`pest` 等工具。Rust 的强类型适合把文法节点刻清楚，但也提醒你：规则一复杂，就该考虑专门解析器，而不是手写一堆临时判断。
 
 ## 何时用
 

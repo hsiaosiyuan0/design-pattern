@@ -123,6 +123,24 @@ class InfantryFactory implements MilitaryFactory {
         return new InfantryWeapon();
     }
 }
+
+class CampaignService {
+    public void prepare(MilitaryFactory factory) {
+        // 调用方只选择一套工厂，产品族一致性由工厂保证
+        Armor armor = factory.createArmor();
+        Weapon weapon = factory.createWeapon();
+        System.out.println("发放：" + armor.name() + " 与 " + weapon.name());
+    }
+}
+
+public class Client {
+    public static void main(String[] args) {
+        CampaignService service = new CampaignService();
+
+        service.prepare(new CavalryFactory());
+        service.prepare(new InfantryFactory());
+    }
+}
 ```
 
 ## 给其他语言背景的读者
@@ -130,6 +148,10 @@ class InfantryFactory implements MilitaryFactory {
 如果你来自 JavaScript，可以把抽象工厂理解成“返回一整组相关对象的工厂函数”。  
 Java 里常写成接口套接口，是因为它特别强调产品族边界和类型一致性。  
 模式本身关心的是成套创建，不是为了把简单工厂再人为加厚一层。
+
+Python 和 JavaScript 里，抽象工厂经常只是一个返回对象集合的模块或配置函数。Objective-C / Swift 里，若要切换一整套 UI 控件、主题、存储实现，可能会用 protocol 约束一组工厂方法；Swift 也常用泛型和依赖注入容器降低传统工厂层级。
+
+Rust 里抽象工厂通常会变成 trait + 关联类型，或者一组构造函数返回彼此匹配的类型。若产品族在编译期固定，关联类型能保证“骑兵甲配骑枪”这类一致性；若要运行时切换，则可能返回 trait object。Rust 的重点是把“同一产品族”的关系写进类型边界。
 
 ## 何时用
 

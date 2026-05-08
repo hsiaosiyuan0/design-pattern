@@ -79,6 +79,17 @@ class DispatchOrder implements Cloneable {
         }
     }
 }
+
+public class Client {
+    public static void main(String[] args) {
+        // 母本已经走过完整校验流程
+        DispatchOrder template = new DispatchOrder("河东", "李都督");
+
+        DispatchOrder newOrder = template.clone();
+        newOrder.setRegion("泽州");
+        newOrder.setCommander("王都督");
+    }
+}
 ```
 
 ## 给其他语言背景的读者
@@ -86,6 +97,10 @@ class DispatchOrder implements Cloneable {
 如果你来自 JavaScript，可以把原型模式先理解成“基于现成对象快速拷出新对象，再改差异”。  
 Java 里它经常和 `clone()` 绑在一起出现，是因为这套 API 历史上就存在；但工程里也可以手动复制，不必执着于 `Cloneable` 本身。  
 模式本体关心的是从样本派生，不是某个老 API 的仪式感。
+
+JavaScript 本身有 prototype 链，但设计模式里的 Prototype 更偏“复制样本对象”，两者不要混在一起。Python 里可以用 `copy` / `deepcopy`，Objective-C 里常见 `NSCopying`，Swift 里值类型天然容易复制，但引用类型仍要小心深浅拷贝。
+
+Rust 里 `Clone` 是显式能力：一个类型能不能复制、复制代价多大，都应当由类型自己声明。很多时候结构体更新语法 `..old` 就能表达“基于旧值改少数字段”。Rust 让原型模式的风险变得更可见，因为所有权和 clone 边界必须写清楚。
 
 ## 何时用
 

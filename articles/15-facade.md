@@ -89,6 +89,14 @@ class CampaignFacade {
         granary.releaseFood();
     }
 }
+
+public class Client {
+    public static void main(String[] args) {
+        // 调用方只面对外观入口，不需要理解门后的衙署顺序
+        CampaignFacade facade = new CampaignFacade();
+        facade.prepareCampaign();
+    }
+}
 ```
 
 ## 给其他语言背景的读者
@@ -96,6 +104,10 @@ class CampaignFacade {
 如果你来自 JavaScript，可以把外观模式先理解成“把一堆底层 API 包成一个更顺手的高层函数”。  
 Java 里常用一个 Facade 类承接这层职责，因为它很适合做明确的系统边界。  
 模式本身关心的是降低调用复杂度，不是把所有子系统硬塞成一个万能对象。
+
+Python 和 JavaScript 里，一个模块导出的少量函数就可能是外观。Objective-C / Swift 里，SDK 经常用 manager、service 或 facade object 把底层 delegate、队列、权限、缓存包起来。Swift 也常通过 protocol 定义一个窄接口，把复杂实现藏在模块内部。
+
+Rust 里外观常是 crate 的公开 API 设计：内部模块很多，对外只暴露少量函数、类型和 trait。`pub(crate)`、模块边界和 re-export 能自然形成外观。它提醒你：外观不只是一个类，也可以是整个包对外呈现的门面。
 
 ## 何时用
 

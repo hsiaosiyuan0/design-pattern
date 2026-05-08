@@ -59,22 +59,36 @@ class City {
 ```java
 interface CityState {
     // 每种状态都要能处理当前局势
-    void handle();
+    void handle(City city, String event);
 }
 
 class PeaceState implements CityState {
     @Override
-    public void handle() {
+    public void handle(City city, String event) {
         // 太平状态下的行为
         System.out.println("正常通商，城门开放");
+        if ("enemy_near".equals(event)) {
+            city.setState(new SiegeState());
+        }
     }
 }
 
 class SiegeState implements CityState {
     @Override
-    public void handle() {
+    public void handle(City city, String event) {
         // 围城状态下的行为
         System.out.println("关闭城门，按战时配给");
+        if ("reinforcement_arrived".equals(event)) {
+            city.setState(new CounterAttackState());
+        }
+    }
+}
+
+class CounterAttackState implements CityState {
+    @Override
+    public void handle(City city, String event) {
+        // 反击状态下的行为
+        System.out.println("半开城门，放骑兵反击");
     }
 }
 
@@ -86,9 +100,18 @@ class City {
         this.state = state;
     }
 
-    public void manage() {
+    public void manage(String event) {
         // 真正怎么管理，由状态对象决定
-        state.handle();
+        state.handle(this, event);
+    }
+}
+
+public class Client {
+    public static void main(String[] args) {
+        City city = new City();
+        city.setState(new PeaceState());
+        city.manage("enemy_near");
+        city.manage("reinforcement_arrived");
     }
 }
 ```
@@ -98,6 +121,10 @@ class City {
 如果你来自 JavaScript，可以把状态模式先理解成“把不同状态下的行为表单独拆出去”，而不是在一个函数里堆条件分支。  
 Java 里常写成多个状态类，是因为它适合把每种状态都变成可替换对象。  
 模式本身关心的是状态驱动行为，不是为了让简单 if/else 看起来更学术。
+
+Python 和 JavaScript 里，如果状态少，状态表或函数字典常常比一组类更轻。Objective-C 里可能用状态对象或枚举分发；Swift 里若状态集合封闭，`enum` + `switch` 往往比状态类更安全，因为编译器能帮你检查是否漏掉某个状态。
+
+Rust 也很适合用 `enum` 表达封闭状态机。若状态转换规则复杂，还可以把状态和转换写成类型，让非法转换在编译期暴露；若状态需要运行时扩展，再考虑 trait object。换句话说，Rust 会把很多“状态模式”压成更显式的枚举和类型状态模型。
 
 ## 何时用
 

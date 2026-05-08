@@ -67,6 +67,42 @@ class ArchiveRoom implements Iterable<String> {
         return files.iterator();
     }
 }
+
+class BoxArchiveRoom implements Iterable<String> {
+    private final String[] files;
+
+    public BoxArchiveRoom(String[] files) {
+        this.files = files;
+    }
+
+    @Override
+    public Iterator<String> iterator() {
+        // 底层是数组，也可以提供同样的遍历入口
+        return java.util.Arrays.asList(files).iterator();
+    }
+}
+
+class ArchivePrinter {
+    public void printAll(Iterable<String> archive) {
+        // 调用方只依赖 Iterable，不关心底层是 List 还是数组
+        for (String file : archive) {
+            System.out.println(file);
+        }
+    }
+}
+
+public class Client {
+    public static void main(String[] args) {
+        ArchiveRoom listArchive = new ArchiveRoom();
+        listArchive.add("河东军报");
+
+        BoxArchiveRoom arrayArchive = new BoxArchiveRoom(new String[] {"蜀地旧档"});
+
+        ArchivePrinter printer = new ArchivePrinter();
+        printer.printAll(listArchive);
+        printer.printAll(arrayArchive);
+    }
+}
 ```
 
 ## 给其他语言背景的读者
@@ -74,6 +110,10 @@ class ArchiveRoom implements Iterable<String> {
 如果你来自 JavaScript，可以把迭代器模式先理解成“约定一种统一遍历协议”。  
 Java 里很多场景已经由集合框架内置了迭代器，所以你常常是在“使用这种思想”，而不是亲手实现一整套类。  
 模式本身关心的是遍历与存储解耦，不是为了多造几个接口。
+
+Python 里 `__iter__` / `__next__` 和生成器已经把迭代器变成日常语法；JavaScript 里也有 iterable protocol 和 generator。Objective-C 有 fast enumeration，Swift 有 `Sequence` / `IteratorProtocol`，所以多数时候你是在实现语言协议，而不是照书造类。
+
+Rust 的迭代器尤其强：`Iterator` trait、适配器链、惰性求值和所有权规则结合得很紧。很多遍历、过滤、映射都能写成 iterator pipeline。这里的模式几乎已经变成语言核心习惯，重点是理解迭代会借用、移动还是生成新值。
 
 ## 何时用
 

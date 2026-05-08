@@ -79,6 +79,22 @@ class Garrison implements Observer {
     }
 }
 
+class Granary implements Observer {
+    @Override
+    public void update(String message) {
+        // 军仓收到敌情后，自行决定是否开库
+        System.out.println("军仓收到军情：" + message + "，准备战时配给");
+    }
+}
+
+class RelayStation implements Observer {
+    @Override
+    public void update(String message) {
+        // 驿站收到敌情后，自行决定是否备马
+        System.out.println("驿站收到军情：" + message + "，备马传令");
+    }
+}
+
 class BeaconTower {
     // 发布者内部只维护订阅者列表
     private final List<Observer> observers = new ArrayList<>();
@@ -95,6 +111,17 @@ class BeaconTower {
         }
     }
 }
+
+public class Client {
+    public static void main(String[] args) {
+        BeaconTower tower = new BeaconTower();
+        tower.subscribe(new Garrison("雁门守军"));
+        tower.subscribe(new Granary());
+        tower.subscribe(new RelayStation());
+
+        tower.alert("敌骑逼近");
+    }
+}
 ```
 
 ## 给其他语言背景的读者
@@ -102,6 +129,10 @@ class BeaconTower {
 如果你先接触的是 JavaScript，可以把观察者模式先理解成事件监听或发布订阅。  
 Java 里常把它写成 `Observer` 接口和一组对象，是因为它习惯用明确类型来约束“谁能接收通知”。  
 模式本身关心的是事件源与响应方解耦，不是要求必须出现这些类名。
+
+Python 里常见的是回调列表、信号库或事件总线；Objective-C 里有 NotificationCenter 和 KVO；Swift 里可能用闭包回调、Combine、NotificationCenter，或现在更常见的 async sequence。语言和框架越内置事件机制，手写观察者类就越少。
+
+Rust 里观察者要额外面对所有权和生命周期。简单场景可以注册函数或闭包，复杂场景会用 channel、事件总线，或 `Arc<Mutex<...>>` 管理共享订阅者。Rust 会让你更早意识到一个问题：订阅者由谁持有，何时取消订阅，事件能否跨线程发送。
 
 ## 何时用
 
