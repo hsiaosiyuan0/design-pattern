@@ -152,6 +152,27 @@ Rust 里观察者要额外面对所有权和生命周期。简单场景可以注
 - `BeaconTower` 维护多个 `Observer`
 - `alert()` 触发统一通知
 
+```mermaid
+classDiagram
+    class BeaconTower {
+        -List~Observer~ observers
+        +subscribe(observer)
+        +alert(message)
+    }
+    class Observer {
+        <<interface>>
+        +update(message)
+    }
+    class Garrison
+    class Granary
+    class RelayStation
+
+    BeaconTower o--> Observer : notifies
+    Observer <|.. Garrison
+    Observer <|.. Granary
+    Observer <|.. RelayStation
+```
+
 ## 下回伏笔
 
 可烽火靠的是约定，军令却不能只靠约定。前线一场误传险些酿祸，沈策这才意识到，有些请求必须被写成卷、盖上印、留下可查的痕迹。

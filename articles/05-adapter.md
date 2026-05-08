@@ -129,6 +129,28 @@ Rust 里适配器很常见，只是名字未必叫 Adapter。`From` / `Into`、n
 - `EnvoyAdapter` 对外实现 `CourtDocument`
 - 内部组合 `ForeignEnvoy`
 
+```mermaid
+classDiagram
+    class CourtDocument {
+        <<interface>>
+        +submit()
+    }
+    class ForeignEnvoy {
+        +submitForeignScroll()
+    }
+    class EnvoyAdapter {
+        -ForeignEnvoy foreignEnvoy
+        +submit()
+    }
+    class CourtService {
+        +archive(document)
+    }
+
+    CourtDocument <|.. EnvoyAdapter
+    EnvoyAdapter o--> ForeignEnvoy : wraps
+    CourtService ..> CourtDocument : uses
+```
+
 ## 下回伏笔
 
 通译番文之后，沈策被派去淮南借粮。到了那座藩镇牙门前，他才见识到另外一种秩序: 有些人并不是你想见就能直接见到的。

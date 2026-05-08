@@ -148,6 +148,27 @@ Rust 里装饰器常表现为 wrapper 类型：比如给一个 reader 外面套 
 - `WarriorDecorator` 包装 `Warrior`
 - `ArmorDecorator`、`ArmGuardDecorator` 可按顺序叠加
 
+```mermaid
+classDiagram
+    class Warrior {
+        <<interface>>
+        +equip()
+    }
+    class BasicWarrior
+    class WarriorDecorator {
+        <<abstract>>
+        #Warrior warrior
+    }
+    class ArmorDecorator
+    class ArmGuardDecorator
+
+    Warrior <|.. BasicWarrior
+    Warrior <|.. WarriorDecorator
+    WarriorDecorator o--> Warrior : wraps
+    WarriorDecorator <|-- ArmorDecorator
+    WarriorDecorator <|-- ArmGuardDecorator
+```
+
 ## 下回伏笔
 
 军器监这边刚整明白“层层增强”，六曹那边又抛出新的难题。沈策第一次意识到，有些麻烦不是单个对象怎么造，而是一整套对象必须同时成制。

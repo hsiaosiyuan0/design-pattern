@@ -170,6 +170,38 @@ Rust 里抽象工厂通常会变成 trait + 关联类型，或者一组构造函
 - `MilitaryFactory` 同时生产 `Armor` 与 `Weapon`
 - `CavalryFactory`、`InfantryFactory` 各自对应一个产品族
 
+```mermaid
+classDiagram
+    class MilitaryFactory {
+        <<interface>>
+        +createArmor()
+        +createWeapon()
+    }
+    class CavalryFactory
+    class InfantryFactory
+    class Armor {
+        <<interface>>
+        +name()
+    }
+    class Weapon {
+        <<interface>>
+        +name()
+    }
+    class CavalryArmor
+    class InfantryArmor
+    class CavalryWeapon
+    class InfantryWeapon
+
+    MilitaryFactory <|.. CavalryFactory
+    MilitaryFactory <|.. InfantryFactory
+    Armor <|.. CavalryArmor
+    Armor <|.. InfantryArmor
+    Weapon <|.. CavalryWeapon
+    Weapon <|.. InfantryWeapon
+    MilitaryFactory ..> Armor : creates
+    MilitaryFactory ..> Weapon : creates
+```
+
 ## 下回伏笔
 
 行营成套制备之后，蜀地旧档又堆满了案头。沈策望着一摞摞格式几乎一样的文书，忽然觉得，若还事事从头誊写，人迟早会被重复劳动磨死。

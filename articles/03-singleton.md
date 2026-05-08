@@ -145,6 +145,19 @@ Rust 里全局唯一对象通常要更谨慎。只读常量可以用 `static`，
 - 类内部持有唯一实例
 - 外界只能通过 `getInstance()` 取用
 
+```mermaid
+classDiagram
+    class ImperialSeal {
+        -static ImperialSeal instance
+        -ImperialSeal()
+        +static getInstance()
+        +stamp(edict)
+    }
+    class Client
+
+    Client ..> ImperialSeal : getInstance()
+```
+
 ## 下回伏笔
 
 印信之事告一段落，北境又催筑城。沈策拿到工部图卷时才明白，天下还有另一类麻烦，不是对象太多，而是一个对象本身就复杂得不像一句话能造完。

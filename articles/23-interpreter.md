@@ -146,6 +146,34 @@ Rust 里解释器常会先把规则解析成 enum AST，再用 `match` 解释执
 - `TerminalExpression` 表示终结符
 - `AndExpression` 等组合表达式负责拼装规则
 
+```mermaid
+classDiagram
+    class Expression {
+        <<interface>>
+        +interpret(context)
+    }
+    class TerminalExpression {
+        -keyword
+        +interpret(context)
+    }
+    class AndExpression {
+        -Expression left
+        -Expression right
+        +interpret(context)
+    }
+    class OrExpression {
+        -Expression left
+        -Expression right
+        +interpret(context)
+    }
+
+    Expression <|.. TerminalExpression
+    Expression <|.. AndExpression
+    Expression <|.. OrExpression
+    AndExpression o--> Expression : left/right
+    OrExpression o--> Expression : left/right
+```
+
 ## 下回余响
 
 这一回之后，沈策的故事其实可以停下，但这套结构不会停。每逢新的系统混乱出现，后来人仍会沿着他留下的这些章法，重新给天下立规矩。

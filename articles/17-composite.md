@@ -130,6 +130,24 @@ Rust 里组合结构通常会显式面对递归类型大小问题，常见写法
 - `Soldier` 是叶子
 - `Squad` 持有多个 `Unit`
 
+```mermaid
+classDiagram
+    class Unit {
+        <<interface>>
+        +showPower()
+    }
+    class Soldier
+    class Squad {
+        -List~Unit~ children
+        +add(unit)
+        +showPower()
+    }
+
+    Unit <|.. Soldier
+    Unit <|.. Squad
+    Squad o--> Unit : children
+```
+
 ## 下回伏笔
 
 层级理顺后，账房又来抱怨名册太厚。沈策翻了几眼便看出，许多信息明明一模一样，却在小卒名下被抄了一万遍。

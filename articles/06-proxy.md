@@ -142,6 +142,27 @@ Rust 里因为借用检查和所有权边界更明确，代理常常表现为 wr
 - `GovernorProxy` 与 `RealGovernor` 共同实现 `Governor`
 - 外界先触达代理，再由代理决定是否放行
 
+```mermaid
+classDiagram
+    class Governor {
+        <<interface>>
+        +approve(visitorToken)
+    }
+    class RealGovernor {
+        +approve(visitorToken)
+    }
+    class GovernorProxy {
+        -RealGovernor realGovernor
+        +approve(visitorToken)
+    }
+    class Client
+
+    Governor <|.. RealGovernor
+    Governor <|.. GovernorProxy
+    GovernorProxy o--> RealGovernor : lazy loads
+    Client ..> Governor : calls
+```
+
 ## 下回伏笔
 
 借粮事毕，北境烽火又起。沈策站上城头时，看见的不是某一个人的威权，而是一整张被信号唤醒的边防网络。

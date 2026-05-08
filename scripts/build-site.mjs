@@ -105,6 +105,26 @@ function renderPage(page, allPages) {
   </div>
   ${renderSiteFooter()}
   <script src="${hrefFor("scripts/site.js", page.output)}"></script>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({
+      startOnLoad: true,
+      securityLevel: "strict",
+      theme: "base",
+      themeVariables: {
+        background: "transparent",
+        primaryColor: "#fffdf8",
+        primaryTextColor: "#18212f",
+        primaryBorderColor: "#0f766e",
+        lineColor: "#64748b",
+        secondaryColor: "#e7f3ef",
+        tertiaryColor: "#f6f8f5",
+        noteBkgColor: "#fff7ed",
+        noteTextColor: "#334155",
+        fontFamily: "Noto Serif SC, Georgia, serif"
+      }
+    });
+  </script>
 </body>
 </html>`;
 }
@@ -397,6 +417,9 @@ function inline(text, source) {
 
 function renderCodeBlock(lang, source) {
   const safeLang = escapeHtml(lang || "text");
+  if (normalizeCodeLang(lang) === "mermaid") {
+    return `<div class="diagram-panel"><pre class="mermaid">${escapeHtml(source)}</pre></div>`;
+  }
   const highlighted = highlightCode(lang, source);
   return `<pre><code class="language-${safeLang}">${highlighted}</code></pre>`;
 }
@@ -489,7 +512,8 @@ function normalizeCodeLang(lang) {
     objective_c: "objectivec",
     objectivec: "objectivec",
     m: "objectivec",
-    mm: "objectivec"
+    mm: "objectivec",
+    mmd: "mermaid"
   };
   const normalized = String(lang || "text").toLowerCase();
   return languageAliases[normalized] || normalized;
@@ -1166,6 +1190,26 @@ button:focus-visible {
 .prose pre code {
   color: inherit;
   font-size: 14px;
+}
+.diagram-panel {
+  overflow-x: auto;
+  margin: 30px 0;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 253, 248, 0.96), rgba(247, 251, 248, 0.96));
+}
+.diagram-panel .mermaid {
+  margin: 0;
+  min-width: 560px;
+  background: transparent;
+  color: var(--ink);
+  text-align: center;
+}
+.diagram-panel svg {
+  max-width: 100%;
+  height: auto;
 }
 .tok-comment { color: #94a3b8; }
 .tok-string { color: #fbbf24; }

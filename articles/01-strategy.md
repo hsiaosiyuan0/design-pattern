@@ -180,6 +180,27 @@ Rust 里要看策略是否需要运行时切换。若战法在编译期就能确
 - `Commander` 持有 `BattleStrategy`
 - `RaidStrategy`、`DefenseStrategy`、`DivideStrategy` 并列挂在策略接口之下
 
+```mermaid
+classDiagram
+    class Commander {
+        -BattleStrategy strategy
+        +changeStrategy(strategy)
+        +issueOrder()
+    }
+    class BattleStrategy {
+        <<interface>>
+        +execute()
+    }
+    class RaidStrategy
+    class DefenseStrategy
+    class DivideStrategy
+
+    Commander o--> BattleStrategy : holds
+    BattleStrategy <|.. RaidStrategy
+    BattleStrategy <|.. DefenseStrategy
+    BattleStrategy <|.. DivideStrategy
+```
+
 ## 下回伏笔
 
 河东夜议后，沈策被派往三镇核查募兵。等他再回汴梁时，才发现战法只是第一层麻烦，真正难管的，是“同样叫招兵，造出来的却根本不是同一种军队”。

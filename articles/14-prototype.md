@@ -119,6 +119,21 @@ Rust 里 `Clone` 是显式能力：一个类型能不能复制、复制代价多
 - `DispatchOrder` 提供 `clone()`
 - 新实例基于原实例复制，再修改少量字段
 
+```mermaid
+classDiagram
+    class DispatchOrder {
+        -region
+        -commander
+        +clone()
+        +setRegion(region)
+        +setCommander(commander)
+    }
+    class Client
+
+    Client ..> DispatchOrder : clone template
+    DispatchOrder ..> DispatchOrder : clone()
+```
+
 ## 下回伏笔
 
 蜀地文书缓过一口气后，朝廷又嫌六部门槛太深。地方使者每来一次都要绕半个京城，沈策便知道，接下来要整顿的，不再是对象复制，而是系统入口。

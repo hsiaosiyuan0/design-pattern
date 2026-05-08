@@ -154,6 +154,31 @@ Rust 里访问者常见于 AST 遍历、编译器和解析器。若节点是 enu
 - `Office.accept(Inspector)` 形成双分派
 - 不同 `Inspector` 对同一组 `Office` 执行不同操作
 
+```mermaid
+classDiagram
+    class Office {
+        <<interface>>
+        +accept(inspector)
+    }
+    class GranaryOffice
+    class ArmyOffice
+    class Inspector {
+        <<interface>>
+        +visit(GranaryOffice)
+        +visit(ArmyOffice)
+    }
+    class AuditInspector
+    class DisciplineInspector
+
+    Office <|.. GranaryOffice
+    Office <|.. ArmyOffice
+    Inspector <|.. AuditInspector
+    Inspector <|.. DisciplineInspector
+    Office ..> Inspector : accept
+    Inspector ..> GranaryOffice : visit
+    Inspector ..> ArmyOffice : visit
+```
+
 ## 下回伏笔
 
 巡按走遍四方后，沈策已近晚年。旧制、旧案、旧军令堆在案上，他终于意识到，若不替这乱世立一套可解释的规则，后来人连复盘都无从下手。

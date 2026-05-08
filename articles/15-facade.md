@@ -126,6 +126,25 @@ Rust 里外观常是 crate 的公开 API 设计：内部模块很多，对外只
 - `CampaignFacade` 聚合 `Treasury`、`Arsenal`、`Granary`
 - 调用方只面对统一入口
 
+```mermaid
+classDiagram
+    class CampaignFacade {
+        -Treasury treasury
+        -Arsenal arsenal
+        -Granary granary
+        +prepareCampaign()
+    }
+    class Treasury
+    class Arsenal
+    class Granary
+    class Client
+
+    Client ..> CampaignFacade : calls
+    CampaignFacade o--> Treasury
+    CampaignFacade o--> Arsenal
+    CampaignFacade o--> Granary
+```
+
 ## 下回伏笔
 
 入口整顿之后，新的麻烦又冒出来了。南下运军资时，沈策发现运输方式和运输内容彼此纠缠，像两股绳拧成死结，怎么拆都别扭。

@@ -212,6 +212,42 @@ public class Client {
 - `Fortress.Builder` 分步收集参数
 - `build()` 最终生成 `Fortress`
 
+```mermaid
+classDiagram
+    class Fortress {
+        -wallHeight
+        -towerCount
+        -hasMoat
+        -hasGranary
+        +builder()
+    }
+    class WallStep {
+        <<interface>>
+        +wallHeight()
+    }
+    class TowerStep {
+        <<interface>>
+        +towerCount()
+    }
+    class OptionalStep {
+        <<interface>>
+        +hasMoat()
+        +hasGranary()
+        +build()
+    }
+    class Builder {
+        -wallHeight
+        -towerCount
+        +build()
+    }
+
+    WallStep <|.. Builder
+    TowerStep <|.. Builder
+    OptionalStep <|.. Builder
+    Builder ..> Fortress : build
+    Fortress ..> WallStep : builder()
+```
+
 ## 下回伏笔
 
 边城图成后，吴越使者恰入汴梁。沈策本以为工部已经够难缠，没想到真正让朝廷发愁的，是两套制度之间连话都说不通。

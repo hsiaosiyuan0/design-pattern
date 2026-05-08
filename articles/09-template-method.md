@@ -146,6 +146,29 @@ Rust 不鼓励用继承表达骨架，因此传统模板方法会变形。你可
 - `Campaign` 提供固定流程
 - 子类只改 `deploy()`、`fight()` 等变化步骤
 
+```mermaid
+classDiagram
+    class Campaign {
+        <<abstract>>
+        +executeCampaign()
+        #prepare()
+        #deploy()
+        #fight()
+        #settle()
+    }
+    class CavalryCampaign {
+        #deploy()
+        #fight()
+    }
+    class NavalCampaign {
+        #deploy()
+        #fight()
+    }
+
+    Campaign <|-- CavalryCampaign
+    Campaign <|-- NavalCampaign
+```
+
 ## 下回伏笔
 
 只是世上也有些局面，不是靠祖制就能写尽。等沈策到了边城，才发现同一个守城官，在不同局势下像是换了一个人。
