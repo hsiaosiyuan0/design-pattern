@@ -1,0 +1,15 @@
+{
+  "name": "乱世里的设计模式",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A static reading site for a story-driven Java design patterns tutorial.",
+  "type": "module",
+  "scripts": {
+    "ai-scenes": "node scripts/generate-ai-scenes.mjs",
+    "codex-scenes": "node scripts/generate-codex-scenes.mjs",
+    "assets": "npm run codex-scenes",
+    "build": "node scripts/build-site.mjs",
+    "serve": "npm run build && python3 -m http.server 4000 -d dist",
+    "clean": "rm -rf dist node_modules/.cache"
+  }
+}

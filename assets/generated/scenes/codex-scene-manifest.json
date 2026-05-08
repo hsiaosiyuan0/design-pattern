@@ -1,0 +1,186 @@
+{
+  "01-strategy-scene.png": {
+    "status": "exists",
+    "chapter": "第一回",
+    "pattern": "策略模式",
+    "outputFile": "assets/generated/scenes/01-strategy-scene.png",
+    "updatedAt": "2026-05-08T09:17:59.583Z",
+    "inserted": false
+  },
+  "02-factory-method-scene.png": {
+    "status": "exists",
+    "chapter": "第二回",
+    "pattern": "工厂方法模式",
+    "outputFile": "assets/generated/scenes/02-factory-method-scene.png",
+    "updatedAt": "2026-05-08T09:17:59.584Z",
+    "inserted": false
+  },
+  "03-singleton-scene.png": {
+    "status": "exists",
+    "chapter": "第三回",
+    "pattern": "单例模式",
+    "outputFile": "assets/generated/scenes/03-singleton-scene.png",
+    "updatedAt": "2026-05-08T09:17:59.584Z",
+    "inserted": false
+  },
+  "04-builder-scene.png": {
+    "status": "exists",
+    "chapter": "第四回",
+    "pattern": "建造者模式",
+    "outputFile": "assets/generated/scenes/04-builder-scene.png",
+    "updatedAt": "2026-05-08T09:17:59.584Z",
+    "inserted": false
+  },
+  "05-adapter-scene.png": {
+    "status": "exists",
+    "chapter": "第五回",
+    "pattern": "适配器模式",
+    "outputFile": "assets/generated/scenes/05-adapter-scene.png",
+    "updatedAt": "2026-05-08T09:17:59.584Z",
+    "inserted": false
+  },
+  "06-proxy-scene.png": {
+    "status": "exists",
+    "chapter": "第六回",
+    "pattern": "代理模式",
+    "outputFile": "assets/generated/scenes/06-proxy-scene.png",
+    "updatedAt": "2026-05-08T09:17:59.584Z",
+    "inserted": false
+  },
+  "07-observer-scene.png": {
+    "status": "exists",
+    "chapter": "第七回",
+    "pattern": "观察者模式",
+    "outputFile": "assets/generated/scenes/07-observer-scene.png",
+    "updatedAt": "2026-05-08T09:17:59.584Z",
+    "inserted": false
+  },
+  "08-command-scene.png": {
+    "status": "exists",
+    "chapter": "第八回",
+    "pattern": "命令模式",
+    "outputFile": "assets/generated/scenes/08-command-scene.png",
+    "updatedAt": "2026-05-08T09:17:59.585Z",
+    "inserted": false
+  },
+  "09-template-method-scene.png": {
+    "status": "exists",
+    "chapter": "第九回",
+    "pattern": "模板方法模式",
+    "outputFile": "assets/generated/scenes/09-template-method-scene.png",
+    "updatedAt": "2026-05-08T09:17:59.585Z",
+    "inserted": false
+  },
+  "10-state-scene.png": {
+    "status": "exists",
+    "chapter": "第十回",
+    "pattern": "状态模式",
+    "outputFile": "assets/generated/scenes/10-state-scene.png",
+    "updatedAt": "2026-05-08T09:17:59.585Z",
+    "inserted": false
+  },
+  "11-chain-of-responsibility-scene.png": {
+    "status": "exists",
+    "chapter": "第十一回",
+    "pattern": "责任链模式",
+    "outputFile": "assets/generated/scenes/11-chain-of-responsibility-scene.png",
+    "updatedAt": "2026-05-08T09:17:59.585Z",
+    "inserted": false
+  },
+  "12-decorator-scene.png": {
+    "status": "exists",
+    "chapter": "第十二回",
+    "pattern": "装饰器模式",
+    "outputFile": "assets/generated/scenes/12-decorator-scene.png",
+    "updatedAt": "2026-05-08T09:17:59.585Z",
+    "inserted": false
+  },
+  "13-abstract-factory-scene.png": {
+    "status": "exists",
+    "chapter": "第十三回",
+    "pattern": "抽象工厂模式",
+    "outputFile": "assets/generated/scenes/13-abstract-factory-scene.png",
+    "updatedAt": "2026-05-08T09:17:59.585Z",
+    "inserted": false
+  },
+  "14-prototype-scene.png": {
+    "status": "exists",
+    "chapter": "第十四回",
+    "pattern": "原型模式",
+    "outputFile": "assets/generated/scenes/14-prototype-scene.png",
+    "updatedAt": "2026-05-08T09:17:59.585Z",
+    "inserted": false
+  },
+  "15-facade-scene.png": {
+    "status": "exists",
+    "chapter": "第十五回",
+    "pattern": "外观模式",
+    "outputFile": "assets/generated/scenes/15-facade-scene.png",
+    "updatedAt": "2026-05-08T09:17:59.585Z",
+    "inserted": true
+  },
+  "16-bridge-scene.png": {
+    "status": "exists",
+    "chapter": "第十六回",
+    "pattern": "桥接模式",
+    "outputFile": "assets/generated/scenes/16-bridge-scene.png",
+    "updatedAt": "2026-05-08T09:17:59.586Z",
+    "inserted": true
+  },
+  "17-composite-scene.png": {
+    "status": "exists",
+    "chapter": "第十七回",
+    "pattern": "组合模式",
+    "outputFile": "assets/generated/scenes/17-composite-scene.png",
+    "updatedAt": "2026-05-08T09:17:59.586Z",
+    "inserted": true
+  },
+  "18-flyweight-scene.png": {
+    "status": "exists",
+    "chapter": "第十八回",
+    "pattern": "享元模式",
+    "outputFile": "assets/generated/scenes/18-flyweight-scene.png",
+    "updatedAt": "2026-05-08T09:17:59.586Z",
+    "inserted": true
+  },
+  "19-iterator-scene.png": {
+    "status": "exists",
+    "chapter": "第十九回",
+    "pattern": "迭代器模式",
+    "outputFile": "assets/generated/scenes/19-iterator-scene.png",
+    "updatedAt": "2026-05-08T09:17:59.586Z",
+    "inserted": true
+  },
+  "20-mediator-scene.png": {
+    "status": "exists",
+    "chapter": "第二十回",
+    "pattern": "中介者模式",
+    "outputFile": "assets/generated/scenes/20-mediator-scene.png",
+    "updatedAt": "2026-05-08T09:17:59.586Z",
+    "inserted": true
+  },
+  "21-memento-scene.png": {
+    "status": "exists",
+    "chapter": "第二十一回",
+    "pattern": "备忘录模式",
+    "outputFile": "assets/generated/scenes/21-memento-scene.png",
+    "updatedAt": "2026-05-08T09:17:59.586Z",
+    "inserted": true
+  },
+  "22-visitor-scene.png": {
+    "status": "exists",
+    "chapter": "第二十二回",
+    "pattern": "访问者模式",
+    "outputFile": "assets/generated/scenes/22-visitor-scene.png",
+    "updatedAt": "2026-05-08T09:17:59.586Z",
+    "inserted": true
+  },
+  "23-interpreter-scene.png": {
+    "status": "exists",
+    "chapter": "第二十三回",
+    "pattern": "解释器模式",
+    "outputFile": "assets/generated/scenes/23-interpreter-scene.png",
+    "updatedAt": "2026-05-08T09:17:59.586Z",
+    "inserted": true
+  }
+}

@@ -1,0 +1,13 @@
+Use case: historical-scene
+Asset type: chapter illustration for an online novel tutorial
+Primary request: 为《乱世里的设计模式》第十五回生成一张统一风格的历史叙事插图。
+Scene/backdrop: 中书一门，围绕“中书门下，只露一门”展开，画面隐喻外观模式。
+Required motifs: 统一窗口、户部、兵部。
+Subject: 沈策或相关官吏、将校处在章回故事的核心场景中，画面要先像小说插画，再隐约表现设计模式的结构关系。
+Style/medium: cinematic Chinese historical editorial illustration, ink-and-painting texture mixed with detailed concept art.
+Composition/framing: wide horizontal composition, readable at article-header size, clear focal point, quiet negative space for title overlay.
+Lighting/mood: restrained low warm lamplight, cold dusk background, tense but not chaotic.
+Color palette: dark teal, burnt umber, muted gold, ink black, small touches of vermilion.
+Materials/textures: parchment, silk scroll, lacquered wood, worn paper, brushed ink grain.
+Text: no visible text, no captions, no watermark.
+Constraints: no modern objects, no western armor, no fantasy elements, no anime style, no game UI, no chaotic typography.

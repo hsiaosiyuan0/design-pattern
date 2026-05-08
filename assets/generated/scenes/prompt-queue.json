@@ -1,0 +1,140 @@
+[
+  {
+    "filename": "01-strategy-scene.png",
+    "promptFile": "assets/generated/scenes/prompts/01-strategy-scene.txt",
+    "outputFile": "assets/generated/scenes/01-strategy-scene.png",
+    "status": "exists"
+  },
+  {
+    "filename": "02-factory-method-scene.png",
+    "promptFile": "assets/generated/scenes/prompts/02-factory-method-scene.txt",
+    "outputFile": "assets/generated/scenes/02-factory-method-scene.png",
+    "status": "exists"
+  },
+  {
+    "filename": "03-singleton-scene.png",
+    "promptFile": "assets/generated/scenes/prompts/03-singleton-scene.txt",
+    "outputFile": "assets/generated/scenes/03-singleton-scene.png",
+    "status": "exists"
+  },
+  {
+    "filename": "04-builder-scene.png",
+    "promptFile": "assets/generated/scenes/prompts/04-builder-scene.txt",
+    "outputFile": "assets/generated/scenes/04-builder-scene.png",
+    "status": "exists"
+  },
+  {
+    "filename": "05-adapter-scene.png",
+    "promptFile": "assets/generated/scenes/prompts/05-adapter-scene.txt",
+    "outputFile": "assets/generated/scenes/05-adapter-scene.png",
+    "status": "exists"
+  },
+  {
+    "filename": "06-proxy-scene.png",
+    "promptFile": "assets/generated/scenes/prompts/06-proxy-scene.txt",
+    "outputFile": "assets/generated/scenes/06-proxy-scene.png",
+    "status": "exists"
+  },
+  {
+    "filename": "07-observer-scene.png",
+    "promptFile": "assets/generated/scenes/prompts/07-observer-scene.txt",
+    "outputFile": "assets/generated/scenes/07-observer-scene.png",
+    "status": "exists"
+  },
+  {
+    "filename": "08-command-scene.png",
+    "promptFile": "assets/generated/scenes/prompts/08-command-scene.txt",
+    "outputFile": "assets/generated/scenes/08-command-scene.png",
+    "status": "exists"
+  },
+  {
+    "filename": "09-template-method-scene.png",
+    "promptFile": "assets/generated/scenes/prompts/09-template-method-scene.txt",
+    "outputFile": "assets/generated/scenes/09-template-method-scene.png",
+    "status": "exists"
+  },
+  {
+    "filename": "10-state-scene.png",
+    "promptFile": "assets/generated/scenes/prompts/10-state-scene.txt",
+    "outputFile": "assets/generated/scenes/10-state-scene.png",
+    "status": "exists"
+  },
+  {
+    "filename": "11-chain-of-responsibility-scene.png",
+    "promptFile": "assets/generated/scenes/prompts/11-chain-of-responsibility-scene.txt",
+    "outputFile": "assets/generated/scenes/11-chain-of-responsibility-scene.png",
+    "status": "exists"
+  },
+  {
+    "filename": "12-decorator-scene.png",
+    "promptFile": "assets/generated/scenes/prompts/12-decorator-scene.txt",
+    "outputFile": "assets/generated/scenes/12-decorator-scene.png",
+    "status": "exists"
+  },
+  {
+    "filename": "13-abstract-factory-scene.png",
+    "promptFile": "assets/generated/scenes/prompts/13-abstract-factory-scene.txt",
+    "outputFile": "assets/generated/scenes/13-abstract-factory-scene.png",
+    "status": "exists"
+  },
+  {
+    "filename": "14-prototype-scene.png",
+    "promptFile": "assets/generated/scenes/prompts/14-prototype-scene.txt",
+    "outputFile": "assets/generated/scenes/14-prototype-scene.png",
+    "status": "exists"
+  },
+  {
+    "filename": "15-facade-scene.png",
+    "promptFile": "assets/generated/scenes/prompts/15-facade-scene.txt",
+    "outputFile": "assets/generated/scenes/15-facade-scene.png",
+    "status": "exists"
+  },
+  {
+    "filename": "16-bridge-scene.png",
+    "promptFile": "assets/generated/scenes/prompts/16-bridge-scene.txt",
+    "outputFile": "assets/generated/scenes/16-bridge-scene.png",
+    "status": "exists"
+  },
+  {
+    "filename": "17-composite-scene.png",
+    "promptFile": "assets/generated/scenes/prompts/17-composite-scene.txt",
+    "outputFile": "assets/generated/scenes/17-composite-scene.png",
+    "status": "exists"
+  },
+  {
+    "filename": "18-flyweight-scene.png",
+    "promptFile": "assets/generated/scenes/prompts/18-flyweight-scene.txt",
+    "outputFile": "assets/generated/scenes/18-flyweight-scene.png",
+    "status": "exists"
+  },
+  {
+    "filename": "19-iterator-scene.png",
+    "promptFile": "assets/generated/scenes/prompts/19-iterator-scene.txt",
+    "outputFile": "assets/generated/scenes/19-iterator-scene.png",
+    "status": "exists"
+  },
+  {
+    "filename": "20-mediator-scene.png",
+    "promptFile": "assets/generated/scenes/prompts/20-mediator-scene.txt",
+    "outputFile": "assets/generated/scenes/20-mediator-scene.png",
+    "status": "exists"
+  },
+  {
+    "filename": "21-memento-scene.png",
+    "promptFile": "assets/generated/scenes/prompts/21-memento-scene.txt",
+    "outputFile": "assets/generated/scenes/21-memento-scene.png",
+    "status": "exists"
+  },
+  {
+    "filename": "22-visitor-scene.png",
+    "promptFile": "assets/generated/scenes/prompts/22-visitor-scene.txt",
+    "outputFile": "assets/generated/scenes/22-visitor-scene.png",
+    "status": "exists"
+  },
+  {
+    "filename": "23-interpreter-scene.png",
+    "promptFile": "assets/generated/scenes/prompts/23-interpreter-scene.txt",
+    "outputFile": "assets/generated/scenes/23-interpreter-scene.png",
+    "status": "exists"
+  }
+]
