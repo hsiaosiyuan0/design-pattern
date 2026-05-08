@@ -57,6 +57,7 @@ function renderPage(page, allPages) {
   const chapterIndex = allPages.filter((item) => item.kind === "chapter");
   const currentHref = hrefFor(page.output, page.output);
   const canonicalTitle = escapeHtml(page.title);
+  const documentTitle = page.title === "乱世里的设计模式" ? canonicalTitle : `${canonicalTitle} · 乱世里的设计模式`;
   const homeHref = hrefFor("index.html", page.output);
   const mainContent =
     page.kind === "cover"
@@ -68,7 +69,7 @@ function renderPage(page, allPages) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>${canonicalTitle} · 乱世里的设计模式</title>
+  <title>${documentTitle}</title>
   <meta name="description" content="用历史小说笔法讲解 Java 设计模式。">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
